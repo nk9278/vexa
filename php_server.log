@@ -1,0 +1,22 @@
+[Sat Jun 27 04:09:06 2026] PHP 8.3.6 Development Server (http://localhost:3000) started
+[Sat Jun 27 04:10:01 2026] [::1]:49586 Accepted
+[Sat Jun 27 04:10:01 2026] [::1]:49586 [200]: GET /index.php
+[Sat Jun 27 04:10:01 2026] [::1]:49586 Closing
+[Sat Jun 27 04:10:01 2026] [::1]:49596 Accepted
+[Sat Jun 27 04:10:01 2026] [::1]:49600 Accepted
+[Sat Jun 27 04:10:01 2026] [::1]:49596 [200]: GET /assets/css/app.css
+[Sat Jun 27 04:10:01 2026] [::1]:49596 Closing
+[Sat Jun 27 04:10:01 2026] [::1]:49600 [200]: GET /assets/js/app.js
+[Sat Jun 27 04:10:01 2026] [::1]:49600 Closing
+[Sat Jun 27 04:13:11 2026] [::1]:50668 Accepted
+[Sat Jun 27 04:13:11 2026] [::1]:50668 [200]: GET /index.php
+[Sat Jun 27 04:13:11 2026] [::1]:50668 Closing
+[Sat Jun 27 04:13:11 2026] [::1]:50684 Accepted
+[Sat Jun 27 04:13:11 2026] [::1]:50684 [200]: GET /assets/js/app.js
+[Sat Jun 27 04:13:11 2026] [::1]:50684 Closing
+[Sat Jun 27 04:16:59 2026] [::1]:43758 Accepted
+[Sat Jun 27 04:16:59 2026] [::1]:43758 [200]: GET /index.php
+[Sat Jun 27 04:16:59 2026] [::1]:43758 Closing
+[Sat Jun 27 04:16:59 2026] [::1]:43766 Accepted
+[Sat Jun 27 04:16:59 2026] [::1]:43766 [200]: GET /assets/js/app.js
+[Sat Jun 27 04:16:59 2026] [::1]:43766 Closing
