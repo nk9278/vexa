@@ -58,7 +58,25 @@ function checkSessionTimeout() {
 
 // Execute checks on file load
 secureSessionRegenerate();
-if (!checkSessionTimeout() && basename($_SERVER['PHP_SELF']) !== 'login.php') {
-    // If we are not on the login page and session timed out, redirect.
-    // In Phase 11 we don't have a login page yet, so we just clear it.
+if (!checkSessionTimeout()) {
+    // Determine if it's an AJAX request
+    $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
+    // Only redirect if it's not an auth page to prevent redirect loops
+    $currentFile = basename($_SERVER['PHP_SELF']);
+    $authFiles = ['login.php', 'forgot-password.php', 'reset-password.php', 'session-expired.php'];
+
+    if (!in_array($currentFile, $authFiles)) {
+        if ($isAjax) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => 'Session expired. Please log in again.', 'redirect' => BASE_URL . 'auth/session-expired.php']);
+            exit;
+        } else {
+            if (!headers_sent()) {
+                header("Location: " . BASE_URL . "auth/session-expired.php");
+                exit;
+            }
+        }
+    }
 }

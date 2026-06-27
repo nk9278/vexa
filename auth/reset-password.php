@@ -1,6 +1,8 @@
 <?php
 // auth/reset-password.php
-require_once __DIR__ . '/../includes/constants.php';
+require_once __DIR__ . '/../includes/functions.php';
+requireGuest();
+
 define('PAGE_TITLE', 'Create New Password');
 
 require_once BASE_PATH . '/includes/header.php';
@@ -15,7 +17,10 @@ require_once BASE_PATH . '/includes/header.php';
         </div>
 
         <div class="bg-white py-8 px-4 shadow-sm sm:rounded-2xl border border-slate-100 sm:px-10">
-            <form class="space-y-6" onsubmit="event.preventDefault(); showToast('success', 'Password reset successfully.'); setTimeout(() => { window.location.href = 'login.php'; }, 2000);">
+            <form id="resetForm" class="space-y-6">
+                <!-- Hidden inputs for token and email passed via URL -->
+                <input type="hidden" name="token" value="<?= esc($_GET['token'] ?? '') ?>">
+                <input type="hidden" name="email" value="<?= esc($_GET['email'] ?? '') ?>">
 
                 <div>
                     <label for="password" class="form-label">New Password <span class="text-rose-500">*</span></label>
@@ -60,3 +65,37 @@ require_once BASE_PATH . '/includes/header.php';
     </div>
 </div>
 <?php require_once BASE_PATH . '/includes/footer.php'; ?>
+<script>
+$(document).ready(function() {
+    $('#resetForm').on('submit', function(e) {
+        e.preventDefault();
+
+        let submitBtn = $(this).find('button[type="submit"]');
+        let originalText = submitBtn.text();
+
+        submitBtn.html('<div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mx-auto"></div>').prop('disabled', true);
+
+        $.ajax({
+            url: '<?= BASE_URL ?>api/auth/reset-password.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.status === 'success') {
+                    showToast('success', response.message);
+                    setTimeout(function() {
+                        window.location.href = response.data.redirect;
+                    }, 2000);
+                } else {
+                    showToast('error', response.message);
+                    submitBtn.text(originalText).prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                let res = xhr.responseJSON;
+                showToast('error', res ? res.message : 'Network error. Please try again.');
+                submitBtn.text(originalText).prop('disabled', false);
+            }
+        });
+    });
+});
+</script>

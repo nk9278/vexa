@@ -1,6 +1,8 @@
 <?php
 // auth/forgot-password.php
-require_once __DIR__ . '/../includes/constants.php';
+require_once __DIR__ . '/../includes/functions.php';
+requireGuest();
+
 define('PAGE_TITLE', 'Reset Password');
 
 require_once BASE_PATH . '/includes/header.php';
@@ -15,7 +17,7 @@ require_once BASE_PATH . '/includes/header.php';
         </div>
 
         <div class="bg-white py-8 px-4 shadow-sm sm:rounded-2xl border border-slate-100 sm:px-10">
-            <form class="space-y-6" onsubmit="event.preventDefault(); showToast('success', 'Password reset link sent to your email.');">
+            <form id="forgotForm" class="space-y-6">
 
                 <div>
                     <label for="email" class="form-label">Email address <span class="text-rose-500">*</span></label>
@@ -44,3 +46,35 @@ require_once BASE_PATH . '/includes/header.php';
     </div>
 </div>
 <?php require_once BASE_PATH . '/includes/footer.php'; ?>
+<script>
+$(document).ready(function() {
+    $('#forgotForm').on('submit', function(e) {
+        e.preventDefault();
+
+        let submitBtn = $(this).find('button[type="submit"]');
+        let originalText = submitBtn.text();
+
+        submitBtn.html('<div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mx-auto"></div>').prop('disabled', true);
+
+        $.ajax({
+            url: '<?= BASE_URL ?>api/auth/forgot-password.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.status === 'success') {
+                    showToast('success', response.message);
+                    $('#email').val(''); // Clear form
+                } else {
+                    showToast('error', response.message);
+                }
+                submitBtn.text(originalText).prop('disabled', false);
+            },
+            error: function(xhr) {
+                let res = xhr.responseJSON;
+                showToast('error', res ? res.message : 'Network error. Please try again.');
+                submitBtn.text(originalText).prop('disabled', false);
+            }
+        });
+    });
+});
+</script>

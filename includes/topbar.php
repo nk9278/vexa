@@ -66,7 +66,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access den
                 </div>
                 <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Your Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-rose-600 hover:bg-rose-50" role="menuitem">Sign out</a>
+                <a href="<?= BASE_URL ?>api/auth/logout.php" class="block px-4 py-2 text-sm text-rose-600 hover:bg-rose-50" role="menuitem">Sign out</a>
             </div>
         </div>
 

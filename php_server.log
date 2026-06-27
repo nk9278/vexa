@@ -44,3 +44,57 @@
 [Sat Jun 27 05:53:33 2026] [::1]:57380 Accepted
 [Sat Jun 27 05:53:33 2026] [::1]:57380 [200]: GET /assets/js/app.js
 [Sat Jun 27 05:53:33 2026] [::1]:57380 Closing
+[Sat Jun 27 06:37:11 2026] [::1]:33826 Accepted
+[Sat Jun 27 06:37:12 2026] [::1]:33826 [200]: GET /auth/login.php
+[Sat Jun 27 06:37:12 2026] [::1]:33826 Closing
+[Sat Jun 27 06:37:12 2026] [::1]:33842 Accepted
+[Sat Jun 27 06:37:12 2026] [::1]:33842 [200]: GET /assets/js/app.js
+[Sat Jun 27 06:37:12 2026] [::1]:33842 Closing
+[Sat Jun 27 06:37:14 2026] [::1]:33846 Accepted
+[Sat Jun 27 06:37:14 2026] [::1]:33846 [200]: POST /api/auth/login.php
+[Sat Jun 27 06:37:14 2026] [::1]:33846 Closing
+[Sat Jun 27 06:37:15 2026] [::1]:46874 Accepted
+[Sat Jun 27 06:37:15 2026] [::1]:46874 [200]: POST /api/auth/login.php
+[Sat Jun 27 06:37:15 2026] [::1]:46874 Closing
+[Sat Jun 27 06:43:47 2026] [::1]:48538 Accepted
+[Sat Jun 27 06:43:47 2026] [::1]:48538 [200]: GET /auth/login.php
+[Sat Jun 27 06:43:47 2026] [::1]:48538 Closing
+[Sat Jun 27 06:43:47 2026] [::1]:48542 Accepted
+[Sat Jun 27 06:43:47 2026] [::1]:48542 [200]: GET /assets/js/app.js
+[Sat Jun 27 06:43:47 2026] [::1]:48542 Closing
+[Sat Jun 27 06:43:48 2026] [::1]:48544 Accepted
+[Sat Jun 27 06:43:48 2026] [::1]:48544 [200]: POST /api/auth/login.php
+[Sat Jun 27 06:43:48 2026] [::1]:48544 Closing
+[Sat Jun 27 06:43:50 2026] [::1]:48558 Accepted
+[Sat Jun 27 06:43:50 2026] [::1]:48558 [200]: POST /api/auth/login.php
+[Sat Jun 27 06:43:50 2026] [::1]:48558 Closing
+[Sat Jun 27 06:43:50 2026] [::1]:48568 Accepted
+[Sat Jun 27 06:43:50 2026] [::1]:48568 [404]: GET /dashboard/ - No such file or directory
+[Sat Jun 27 06:43:50 2026] [::1]:48568 Closing
+[Sat Jun 27 06:53:06 2026] [::1]:48262 Accepted
+[Sat Jun 27 06:53:06 2026] [::1]:48262 [200]: GET /auth/login.php
+[Sat Jun 27 06:53:06 2026] [::1]:48262 Closing
+[Sat Jun 27 06:53:06 2026] [::1]:48268 Accepted
+[Sat Jun 27 06:53:06 2026] [::1]:48268 [200]: GET /assets/js/app.js
+[Sat Jun 27 06:53:06 2026] [::1]:48268 Closing
+[Sat Jun 27 06:53:08 2026] [::1]:48278 Accepted
+[Sat Jun 27 06:53:08 2026] [::1]:48278 [500]: POST /api/auth/login.php
+[Sat Jun 27 06:53:08 2026] [::1]:48278 Closing
+[Sat Jun 27 06:53:09 2026] [::1]:48284 Accepted
+[Sat Jun 27 06:53:09 2026] [::1]:48284 [500]: POST /api/auth/login.php
+[Sat Jun 27 06:53:09 2026] [::1]:48284 Closing
+[Sat Jun 27 07:06:33 2026] [::1]:50296 Accepted
+[Sat Jun 27 07:06:33 2026] [::1]:50296 [200]: GET /auth/login.php
+[Sat Jun 27 07:06:33 2026] [::1]:50296 Closing
+[Sat Jun 27 07:06:33 2026] [::1]:50300 Accepted
+[Sat Jun 27 07:06:33 2026] [::1]:50300 [200]: GET /assets/js/app.js
+[Sat Jun 27 07:06:33 2026] [::1]:50300 Closing
+[Sat Jun 27 07:06:35 2026] [::1]:52500 Accepted
+[Sat Jun 27 07:06:35 2026] [::1]:52500 [200]: POST /api/auth/login.php
+[Sat Jun 27 07:06:35 2026] [::1]:52500 Closing
+[Sat Jun 27 07:06:36 2026] [::1]:52516 Accepted
+[Sat Jun 27 07:06:37 2026] [::1]:52516 [200]: POST /api/auth/login.php
+[Sat Jun 27 07:06:37 2026] [::1]:52516 Closing
+[Sat Jun 27 07:06:37 2026] [::1]:52530 Accepted
+[Sat Jun 27 07:06:37 2026] [::1]:52530 [404]: GET /dashboard/ - No such file or directory
+[Sat Jun 27 07:06:37 2026] [::1]:52530 Closing

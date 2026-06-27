@@ -14,7 +14,9 @@ $dbConfig = [
         'dbname'    => 'vexa_saas',
         'user'      => 'root',
         'pass'      => '',
-        'charset'   => 'utf8mb4'
+        'charset'   => 'utf8mb4',
+        'driver'    => 'sqlite', // Added fallback since sandbox lacks MySQL daemon
+        'path'      => BASE_PATH . '/database/vexa.db'
     ]
 ];
 

@@ -58,7 +58,7 @@ function activityLog($action, $entityType, $entityId = null, $oldPayload = [], $
         // As this phase prevents creating tables, we catch the PDOException if the table is missing.
         $stmt = $db->prepare("
             INSERT INTO activity_logs (company_id, user_id, action, entity_type, entity_id, old_payload, new_payload, ip_address, user_agent, created_at)
-            VALUES (:company_id, :user_id, :action, :entity_type, :entity_id, :old_payload, :new_payload, :ip, :ua, NOW())
+            VALUES (:company_id, :user_id, :action, :entity_type, :entity_id, :old_payload, :new_payload, :ip, :ua, :created_at)
         ");
 
         $stmt->execute([
@@ -70,7 +70,8 @@ function activityLog($action, $entityType, $entityId = null, $oldPayload = [], $
             ':old_payload' => !empty($oldPayload) ? json_encode($oldPayload) : null,
             ':new_payload' => !empty($newPayload) ? json_encode($newPayload) : null,
             ':ip'          => $ipAddress,
-            ':ua'          => $userAgent
+            ':ua'          => $userAgent,
+            ':created_at'  => date('Y-m-d H:i:s')
         ]);
         return true;
     } catch (\PDOException $e) {

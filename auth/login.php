@@ -1,9 +1,9 @@
 <?php
 // auth/login.php
-require_once __DIR__ . '/../includes/constants.php';
-define('PAGE_TITLE', 'Sign In');
+require_once __DIR__ . '/../includes/functions.php';
+requireGuest();
 
-// Using the same header structure to reuse CSS/fonts, but overriding the layout
+define('PAGE_TITLE', 'Sign In');
 require_once BASE_PATH . '/includes/header.php';
 ?>
 <div class="min-h-screen w-full bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -21,7 +21,7 @@ require_once BASE_PATH . '/includes/header.php';
 
         <!-- Auth Card -->
         <div class="bg-white py-8 px-4 shadow-sm sm:rounded-2xl border border-slate-100 sm:px-10">
-            <form class="space-y-6" onsubmit="event.preventDefault(); showLoader(); setTimeout(hideLoader, 2000); showToast('info', 'Auth logic disabled in Phase 12.');">
+            <form id="loginForm" class="space-y-6">
 
                 <!-- Email Input -->
                 <div>
@@ -86,3 +86,35 @@ require_once BASE_PATH . '/includes/header.php';
     </div>
 </div>
 <?php require_once BASE_PATH . '/includes/footer.php'; ?>
+<script>
+$(document).ready(function() {
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault();
+
+        let submitBtn = $(this).find('button[type="submit"]');
+        let originalText = submitBtn.text();
+
+        submitBtn.html('<div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mx-auto"></div>').prop('disabled', true);
+
+        $.ajax({
+            url: '<?= BASE_URL ?>api/auth/login.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.status === 'success') {
+                    showToast('success', response.message);
+                    window.location.href = response.data.redirect;
+                } else {
+                    showToast('error', response.message || 'An error occurred.');
+                    submitBtn.text(originalText).prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                let res = xhr.responseJSON;
+                showToast('error', res ? res.message : 'Network error. Please try again.');
+                submitBtn.text(originalText).prop('disabled', false);
+            }
+        });
+    });
+});
+</script>

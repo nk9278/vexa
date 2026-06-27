@@ -18,11 +18,15 @@ require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/security.php';
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/auth.php'; // Included in Phase 13
 require_once __DIR__ . '/upload.php';
 require_once __DIR__ . '/mail.php';
 
 // Apply security headers to every page that includes this master file
 setSecurityHeaders();
+
+// Check for Remember Me cookies early in the request lifecycle
+checkRememberMe();
 
 /**
  * Generic Input Validation Wrapper

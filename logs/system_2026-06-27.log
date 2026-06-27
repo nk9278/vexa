@@ -1,0 +1,8 @@
+[2026-06-27 06:33:44] [CRITICAL] PDO Connection Failed: SQLSTATE[HY000] [2002] No such file or directory
+[2026-06-27 06:37:14] [ERROR] Login DB Error: SQLSTATE[HY000]: General error: 1 near "15": syntax error
+[2026-06-27 06:37:15] [ERROR] Login DB Error: SQLSTATE[HY000]: General error: 1 near "15": syntax error
+[2026-06-27 06:53:08] [CRITICAL] PDO Connection Failed: SQLSTATE[HY000] [2002] No such file or directory
+[2026-06-27 06:53:08] [ERROR] Uncaught Exception: Database connection failed. Check server logs. in /app/includes/database.php on line 31
+[2026-06-27 06:53:09] [CRITICAL] PDO Connection Failed: SQLSTATE[HY000] [2002] No such file or directory
+[2026-06-27 06:53:09] [ERROR] Uncaught Exception: Database connection failed. Check server logs. in /app/includes/database.php on line 31
+[2026-06-27 07:02:35] [CRITICAL] PDO Connection Failed: SQLSTATE[HY000] [1698] Access denied for user 'root'@'localhost'

@@ -15,7 +15,17 @@ class Database {
         global $dbConfig;
 
         $config = $dbConfig['default'];
-        $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
+
+        // For local Sandbox testing, fall back to SQLite if requested by config
+        if (isset($config['driver']) && $config['driver'] === 'sqlite') {
+            $dsn = "sqlite:" . $config['path'];
+            $user = null;
+            $pass = null;
+        } else {
+            $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
+            $user = $config['user'];
+            $pass = $config['pass'];
+        }
 
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -24,7 +34,10 @@ class Database {
         ];
 
         try {
-            $this->connection = new PDO($dsn, $config['user'], $config['pass'], $options);
+            $this->connection = new PDO($dsn, $user, $pass, $options);
+            if (isset($config['driver']) && $config['driver'] === 'sqlite') {
+                $this->connection->exec('PRAGMA foreign_keys = ON;');
+            }
         } catch (\PDOException $e) {
             require_once __DIR__ . '/logger.php';
             writeSysLog('critical', "PDO Connection Failed: " . $e->getMessage());
