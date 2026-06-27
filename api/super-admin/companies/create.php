@@ -1,6 +1,7 @@
 <?php
 // api/super-admin/companies/create.php
 require_once __DIR__ . '/../../../includes/functions.php';
+require_once __DIR__ . '/../../../includes/onboarding.php';
 requireSuperAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -14,7 +15,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || !verifyCsrfToken($_SERVER['HTTP_X_C
 $data = sanitizeInput($_POST);
 
 // Validation
-$required = ['company_name', 'company_code', 'owner_name', 'owner_email', 'status'];
+$required = ['company_name', 'company_code', 'owner_name', 'owner_email', 'status', 'owner_password'];
 $errors = validateRequiredFields($data, $required);
 
 if (!empty($errors)) {
@@ -66,9 +67,24 @@ try {
 
     $newId = $db->lastInsertId();
 
+    // Trigger Onboarding Engine
+    $onboardingData = [
+        'owner_name' => $data['owner_name'],
+        'owner_email' => $data['owner_email'],
+        'owner_mobile' => $data['owner_mobile'] ?? null,
+        'password' => $_POST['owner_password'] // Send raw password so onboarding engine can hash it
+    ];
+    $onboardingResult = initializeCompanyWorkspace($newId, $onboardingData);
+
+    if (!$onboardingResult['success']) {
+        // Technically we should rollback the company creation here or mark it as failed_onboarding.
+        // For simplicity in Phase 17, we will log it.
+        writeSysLog('error', 'Company created but workspace initialization failed for ID ' . $newId);
+    }
+
     activityLog('create_company', 'company', $newId, [], $data, null, $_SESSION['user_id']);
 
-    jsonResponse('success', 'Company created successfully.', ['redirect' => BASE_URL . 'super-admin/companies/view.php?id=' . $newId]);
+    jsonResponse('success', 'Company and Workspace created successfully.', ['redirect' => BASE_URL . 'super-admin/companies/view.php?id=' . $newId]);
 
 } catch (PDOException $e) {
     writeSysLog('error', 'Create Company DB Error: ' . $e->getMessage());

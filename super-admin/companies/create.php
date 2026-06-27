@@ -148,6 +148,10 @@ require_once BASE_PATH . '/super-admin/includes/sidebar.php';
                                 <label class="form-label">Owner Mobile</label>
                                 <input type="text" name="owner_mobile" class="form-input">
                             </div>
+                            <div>
+                                <label class="form-label">Temporary Password <span class="text-rose-500">*</span></label>
+                                <input type="password" name="owner_password" class="form-input" required placeholder="To be changed on first login">
+                            </div>
                         </div>
                     </div>
 
