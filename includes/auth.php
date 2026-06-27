@@ -183,6 +183,19 @@ function requireGuest() {
 }
 
 /**
+ * Middleware: Requires the user to be a Super Admin.
+ * Redirects to 403 Access Denied if unauthorized.
+ * (Assuming role_id 1 is Super Admin for the scope of this foundation)
+ */
+function requireSuperAdmin() {
+    requireLogin();
+
+    if (!isset($_SESSION['role_id']) || $_SESSION['role_id'] != 1) {
+        redirect(BASE_URL . 'errors/403.php');
+    }
+}
+
+/**
  * Generates a password reset token and saves it.
  */
 function generatePasswordResetToken($email) {
