@@ -196,6 +196,32 @@ function requireSuperAdmin() {
 }
 
 /**
+ * Middleware: Requires the user to be an Owner of a Company.
+ * Redirects to 403 Access Denied if unauthorized.
+ */
+function requireOwner() {
+    requireLogin();
+
+    // Super Admins shouldn't access tenant dashboards directly this way
+    if ($_SESSION['role_id'] == 1) {
+        redirect(BASE_URL . 'errors/403.php');
+    }
+
+    try {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT role_name FROM roles WHERE id = ? LIMIT 1");
+        $stmt->execute([$_SESSION['role_id']]);
+        $role = $stmt->fetch();
+
+        if (!$role || strtolower($role['role_name']) !== 'owner') {
+            redirect(BASE_URL . 'errors/403.php');
+        }
+    } catch (\PDOException $e) {
+        redirect(BASE_URL . 'errors/500.php');
+    }
+}
+
+/**
  * Generates a password reset token and saves it.
  */
 function generatePasswordResetToken($email) {
