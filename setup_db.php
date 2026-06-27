@@ -7,8 +7,80 @@ try {
     // Create minimal schema for authentication tests
     // Using simple types to remain agnostic between MySQL and SQLite for sandbox testing
     $db->exec("
+        CREATE TABLE IF NOT EXISTS saas_plans (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            plan_name VARCHAR(255) NOT NULL,
+            plan_code VARCHAR(50) NOT NULL UNIQUE,
+            description TEXT NULL,
+            plan_type VARCHAR(50) DEFAULT 'monthly',
+            price DECIMAL(10,2) DEFAULT 0.00,
+            currency VARCHAR(10) DEFAULT 'USD',
+            gst_percentage DECIMAL(5,2) DEFAULT 0.00,
+            status VARCHAR(50) DEFAULT 'active',
+            color_badge VARCHAR(20) DEFAULT 'neutral',
+            sort_order INT DEFAULT 0,
+
+            -- Usage Limits
+            limit_employees INT DEFAULT 0,
+            limit_managers INT DEFAULT 0,
+            limit_crm_users INT DEFAULT 0,
+            limit_clients INT DEFAULT 0,
+            limit_projects INT DEFAULT 0,
+            limit_tasks INT DEFAULT 0,
+            limit_storage_mb INT DEFAULT 0,
+            limit_gdrive_gb INT DEFAULT 0,
+            limit_file_size_mb INT DEFAULT 0,
+            limit_api_requests INT DEFAULT 0,
+            limit_branches INT DEFAULT 0,
+            limit_custom_roles INT DEFAULT 0,
+            limit_departments INT DEFAULT 0,
+            limit_notifications INT DEFAULT 0,
+
+            -- Feature Flags (JSON string or boolean columns. Using booleans for easier SQL filtering)
+            feature_gdrive TINYINT(1) DEFAULT 0,
+            feature_attendance TINYINT(1) DEFAULT 0,
+            feature_leave TINYINT(1) DEFAULT 0,
+            feature_reports TINYINT(1) DEFAULT 0,
+            feature_advanced_analytics TINYINT(1) DEFAULT 0,
+            feature_export TINYINT(1) DEFAULT 0,
+            feature_import TINYINT(1) DEFAULT 0,
+            feature_custom_branding TINYINT(1) DEFAULT 0,
+            feature_rest_api TINYINT(1) DEFAULT 0,
+            feature_ai_assistant TINYINT(1) DEFAULT 0,
+            feature_whatsapp TINYINT(1) DEFAULT 0,
+            feature_client_portal TINYINT(1) DEFAULT 0,
+            feature_vendor_portal TINYINT(1) DEFAULT 0,
+
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            deleted_at DATETIME NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS saas_subscriptions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            company_id INTEGER NOT NULL,
+            plan_id INTEGER NOT NULL,
+            license_key VARCHAR(100) NOT NULL UNIQUE,
+            status VARCHAR(50) DEFAULT 'pending',
+            start_date DATE NOT NULL,
+            expiry_date DATE NOT NULL,
+            trial_days INT DEFAULT 0,
+            auto_expiry TINYINT(1) DEFAULT 1,
+            remarks TEXT NULL,
+
+            -- Webhook / Future online validation sync
+            last_verified_at DATETIME NULL,
+
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            deleted_at DATETIME NULL,
+
+            FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
+            FOREIGN KEY (plan_id) REFERENCES saas_plans(id) ON DELETE RESTRICT
+        );
+
         CREATE TABLE IF NOT EXISTS companies (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_name VARCHAR(255) NOT NULL,
             company_code VARCHAR(50) NOT NULL UNIQUE,
             company_logo VARCHAR(255) NULL,
