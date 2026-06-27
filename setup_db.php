@@ -7,6 +7,35 @@ try {
     // Create minimal schema for authentication tests
     // Using simple types to remain agnostic between MySQL and SQLite for sandbox testing
     $db->exec("
+        CREATE TABLE IF NOT EXISTS companies (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            company_name VARCHAR(255) NOT NULL,
+            company_code VARCHAR(50) NOT NULL UNIQUE,
+            company_logo VARCHAR(255) NULL,
+            business_type VARCHAR(100) NULL,
+            industry VARCHAR(100) NULL,
+            owner_name VARCHAR(255) NOT NULL,
+            owner_email VARCHAR(255) NOT NULL UNIQUE,
+            owner_mobile VARCHAR(50) NULL,
+            office_phone VARCHAR(50) NULL,
+            gst_number VARCHAR(100) NULL,
+            pan_number VARCHAR(100) NULL,
+            website VARCHAR(255) NULL,
+            address TEXT NULL,
+            city VARCHAR(100) NULL,
+            state VARCHAR(100) NULL,
+            country VARCHAR(100) NULL,
+            postal_code VARCHAR(20) NULL,
+            timezone VARCHAR(100) DEFAULT 'UTC',
+            currency VARCHAR(10) DEFAULT 'USD',
+            language VARCHAR(10) DEFAULT 'en',
+            status VARCHAR(50) DEFAULT 'active',
+            remarks TEXT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            deleted_at DATETIME NULL
+        );
+
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id INTEGER NULL,
