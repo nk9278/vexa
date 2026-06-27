@@ -1,5 +1,6 @@
 <?php
 // includes/topbar.php
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access denied.');
 ?>
 <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30 relative">
 

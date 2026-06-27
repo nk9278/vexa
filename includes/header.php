@@ -1,5 +1,7 @@
 <?php
 // includes/header.php
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access denied.');
+
 require_once __DIR__ . '/functions.php';
 setSecurityHeaders();
 ?>

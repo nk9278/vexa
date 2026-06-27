@@ -1,5 +1,6 @@
 <?php
 // includes/sidebar.php
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access denied.');
 ?>
 <!-- Mobile Drawer Overlay -->
 <div id="drawer-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>

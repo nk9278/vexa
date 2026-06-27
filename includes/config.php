@@ -1,26 +1,42 @@
 <?php
 // includes/config.php
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access denied.');
+
 require_once __DIR__ . '/constants.php';
 
-// Database Configuration
+// Set Default Timezone
+date_default_timezone_set(DEFAULT_TIMEZONE);
+
+// Database Configuration (Centralized array for easy scaling/multi-tenant mapping)
 $dbConfig = [
-    'host' => 'localhost',
-    'dbname' => 'vexa_saas',
-    'user' => 'root',
-    'pass' => '',
-    'charset' => 'utf8mb4'
+    'default' => [
+        'host'      => 'localhost',
+        'dbname'    => 'vexa_saas',
+        'user'      => 'root',
+        'pass'      => '',
+        'charset'   => 'utf8mb4'
+    ]
 ];
 
-// Error Reporting based on Environment
-if (ENVIRONMENT === 'development') {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
-    error_reporting(0);
-    // Ensure errors are logged securely
-    ini_set('log_errors', 1);
-    ini_set('error_log', LOGS_PATH . 'php-error.log');
-}
+// Session Configuration
+$sessionConfig = [
+    'name'           => 'VEXA_SESSION',
+    'lifetime'       => 28800, // 8 Hours
+    'path'           => '/',
+    'domain'         => '', // Can be locked to a specific domain in production
+    'secure'         => (ENVIRONMENT === 'production'), // True requires HTTPS
+    'httponly'       => true, // Prevent JS access to session ID
+    'samesite'       => 'Lax',
+    'regenerate_time'=> 1800 // Regenerate ID every 30 minutes
+];
+
+// Mail Configuration (Placeholder for Phase 11)
+$mailConfig = [
+    'driver'    => 'smtp',
+    'host'      => 'smtp.mailtrap.io',
+    'port'      => 2525,
+    'username'  => '',
+    'password'  => '',
+    'from_name' => APP_NAME,
+    'from_email'=> 'no-reply@vexa.app'
+];
