@@ -1,37 +1,3 @@
-<?php
-// includes/onboarding.php
-if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access denied.');
-
-require_once __DIR__ . '/constants.php';
-require_once __DIR__ . '/database.php';
-require_once __DIR__ . '/logger.php';
-
-/**
- * Company Provisioning Engine
- * Automates the creation of the workspace structure, owner account, default roles,
- * permissions, departments, and master data when a new company is created.
- */
-function initializeCompanyWorkspace($companyId, $ownerData) {
-    try {
-        $db = Database::getInstance()->getConnection();
-        $db->beginTransaction();
-
-        // 1. Create Default Permissions (Global if they don't exist yet)
-        $defaultPermissions = [
-            ['dashboard', 'view_dashboard'],
-            ['team', 'manage_team'],
-            ['team', 'approve_leaves'],
-            ['team', 'view_team'],
-            ['team', 'create_team'],
-            ['team', 'edit_team'],
-            ['team', 'delete_team'],
-            ['team', 'manage_skills'],
-            ['crm', 'manage_clients'],
-            ['projects', 'manage_projects'],
-            ['tasks', 'manage_tasks'],
-            ['tasks', 'approve_tasks'],
-            ['finance', 'manage_finance'],
-            ['settings', 'manage_settings']
         ];
 
         $permIds = [];
@@ -55,7 +21,7 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         $defaultRoles = [
             'Owner' => $allPerms, // Owner gets everything
-            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
+            'Manager' => ['view_dashboard', 'manage_team', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
             'CRM' => ['view_dashboard', 'manage_clients', 'manage_projects'],
             'Graphic Designer' => ['view_dashboard', 'manage_tasks'],
             'Video Editor' => ['view_dashboard', 'manage_tasks'],
@@ -122,62 +88,3 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
             INSERT INTO users (company_id, role_id, first_name, last_name, email, mobile, password, status)
             VALUES (?, ?, ?, ?, ?, ?, ?, 'active')
         ");
-
-        // Split name for Owner
-        $nameParts = explode(' ', trim($ownerData['owner_name']), 2);
-        $firstName = $nameParts[0];
-        $lastName = $nameParts[1] ?? '';
-
-        $stmt->execute([
-            $companyId,
-            $ownerRoleId,
-            $firstName,
-            $lastName,
-            $ownerData['owner_email'],
-            $ownerData['owner_mobile'] ?? null,
-            $hashedPassword
-        ]);
-        $ownerUserId = $db->lastInsertId();
-
-        // 6. Create Default Company Settings
-        $defaultSettings = [
-            'theme_primary_color' => '#4F46E5',
-            'timezone' => 'UTC',
-            'language' => 'en',
-            'currency' => 'USD',
-            'business_hours_start' => '09:00',
-            'business_hours_end' => '17:00',
-            'working_days' => '1,2,3,4,5' // Mon-Fri
-        ];
-
-        foreach ($defaultSettings as $key => $val) {
-            $stmt = $db->prepare("INSERT INTO company_settings (company_id, setting_key, setting_value) VALUES (?, ?, ?)");
-            $stmt->execute([$companyId, $key, $val]);
-        }
-
-        // 7. Create Physical Storage Folders
-        $baseCompanyDir = UPLOADS_PATH . '/' . $companyId;
-        $folders = ['documents', 'graphics', 'videos', 'photos', 'temp', 'reports', 'backup'];
-
-        foreach ($folders as $folder) {
-            $dir = $baseCompanyDir . '/' . $folder;
-            if (!is_dir($dir)) {
-                mkdir($dir, 0755, true);
-                // Secure empty folders for git tracking and web access prevention
-                file_put_contents($dir . '/.gitkeep', '');
-                file_put_contents($dir . '/index.html', ''); // Prevent directory listing
-            }
-        }
-
-        $db->commit();
-
-        activityLog('workspace_initialized', 'company', $companyId, [], [], $companyId, $ownerUserId);
-
-        return ['success' => true, 'owner_id' => $ownerUserId];
-
-    } catch (Exception $e) {
-        if (isset($db)) $db->rollBack();
-        writeSysLog('error', "Onboarding Engine Failed for Company ID {$companyId}: " . $e->getMessage());
-        return ['success' => false, 'message' => $e->getMessage()];
-    }
-}

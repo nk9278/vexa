@@ -54,9 +54,50 @@ try {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             deleted_at DATETIME NULL
-        );
+        )");
 
-        CREATE TABLE IF NOT EXISTS saas_subscriptions (
+    $db->exec("CREATE TABLE IF NOT EXISTS team_members (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        user_id INTEGER NULL, /* Optional link to login user */
+        full_name VARCHAR(100) NOT NULL,
+        display_name VARCHAR(100),
+        email VARCHAR(150) NOT NULL,
+        mobile VARCHAR(20),
+        role_id INTEGER,
+        department_id INTEGER,
+        reporting_manager_id INTEGER,
+        joining_date DATE,
+        employment_type VARCHAR(50) DEFAULT 'Full Time', /* Full Time, Part Time, Freelancer, Intern, Contract */
+        experience VARCHAR(50),
+        short_bio TEXT,
+        status VARCHAR(20) DEFAULT 'active', /* active, inactive, archived */
+        availability_status VARCHAR(20) DEFAULT 'Available', /* Available, Busy, On Leave, Offline */
+        profile_photo VARCHAR(255),
+        remarks TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_at DATETIME NULL,
+        UNIQUE(company_id, email)
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS skills (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(company_id, name)
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS team_member_skills (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        team_member_id INTEGER NOT NULL,
+        skill_id INTEGER NOT NULL,
+        UNIQUE(team_member_id, skill_id)
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS saas_subscriptions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id INTEGER NOT NULL,
             plan_id INTEGER NOT NULL,
