@@ -112,13 +112,17 @@ try {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id INTEGER NOT NULL,
             role_name VARCHAR(100) NOT NULL,
+            display_name VARCHAR(100) NULL,
             is_system INTEGER DEFAULT 0,
+            status VARCHAR(50) DEFAULT 'active',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            deleted_at DATETIME NULL
         );
 
         CREATE TABLE IF NOT EXISTS permissions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            module VARCHAR(100) NOT NULL,
             permission_key VARCHAR(100) NOT NULL UNIQUE,
             description VARCHAR(255) NULL
         );

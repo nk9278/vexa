@@ -18,27 +18,38 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         // 1. Create Default Permissions (Global if they don't exist yet)
         $defaultPermissions = [
-            'view_dashboard', 'manage_team', 'manage_clients', 'manage_projects',
-            'manage_tasks', 'manage_finance', 'manage_settings', 'approve_leaves', 'approve_tasks'
+            ['dashboard', 'view_dashboard'],
+            ['team', 'manage_team'],
+            ['team', 'approve_leaves'],
+            ['crm', 'manage_clients'],
+            ['projects', 'manage_projects'],
+            ['tasks', 'manage_tasks'],
+            ['tasks', 'approve_tasks'],
+            ['finance', 'manage_finance'],
+            ['settings', 'manage_settings']
         ];
 
         $permIds = [];
-        foreach ($defaultPermissions as $perm) {
+        foreach ($defaultPermissions as $permArr) {
+            $module = $permArr[0];
+            $perm = $permArr[1];
             $stmt = $db->prepare("SELECT id FROM permissions WHERE permission_key = ?");
             $stmt->execute([$perm]);
             $res = $stmt->fetch();
             if ($res) {
                 $permIds[$perm] = $res['id'];
             } else {
-                $stmt = $db->prepare("INSERT INTO permissions (permission_key, description) VALUES (?, ?)");
-                $stmt->execute([$perm, ucwords(str_replace('_', ' ', $perm))]);
+                $stmt = $db->prepare("INSERT INTO permissions (module, permission_key, description) VALUES (?, ?, ?)");
+                $stmt->execute([$module, $perm, ucwords(str_replace('_', ' ', $perm))]);
                 $permIds[$perm] = $db->lastInsertId();
             }
         }
 
         // 2. Create Default Roles
+        $allPerms = array_map(function($p) { return $p[1]; }, $defaultPermissions);
+
         $defaultRoles = [
-            'Owner' => $defaultPermissions, // Owner gets everything
+            'Owner' => $allPerms, // Owner gets everything
             'Manager' => ['view_dashboard', 'manage_team', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
             'CRM' => ['view_dashboard', 'manage_clients', 'manage_projects'],
             'Graphic Designer' => ['view_dashboard', 'manage_tasks'],
@@ -58,8 +69,8 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         foreach ($defaultRoles as $roleName => $perms) {
             $isSystem = ($roleName === 'Owner') ? 1 : 0;
-            $stmt = $db->prepare("INSERT INTO roles (company_id, role_name, is_system) VALUES (?, ?, ?)");
-            $stmt->execute([$companyId, $roleName, $isSystem]);
+            $stmt = $db->prepare("INSERT INTO roles (company_id, role_name, display_name, is_system) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$companyId, $roleName, $roleName, $isSystem]);
             $roleId = $db->lastInsertId();
 
             if ($roleName === 'Owner') $ownerRoleId = $roleId;

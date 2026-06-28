@@ -103,8 +103,49 @@ function getStatusBadge($statusStr) {
 }
 
 /**
- * Permission Placeholder (Will be expanded when auth tables exist)
+ * Dynamic Permission Engine Check
+ * Returns true if the logged-in user's role has the requested permission.
  */
 function hasPermission($permissionKey) {
-    return true;
+    // Super Admins bypass tenant-level permission checks
+    if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1) {
+        return true;
+    }
+
+    if (!isset($_SESSION['role_id'])) return false;
+
+    // Cache permissions per request to avoid multiple DB hits for buttons on the same page
+    static $userPermissions = null;
+
+    if ($userPermissions === null) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("
+                SELECT p.permission_key
+                FROM permissions p
+                JOIN role_permissions rp ON p.id = rp.permission_id
+                WHERE rp.role_id = ?
+            ");
+            $stmt->execute([$_SESSION['role_id']]);
+            $userPermissions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
+            $userPermissions = [];
+        }
+    }
+
+    return in_array($permissionKey, $userPermissions, true);
+}
+
+/**
+ * Enforce Permission Middleware
+ * Throws a 403 if the user lacks the specific permission.
+ */
+function requirePermission($permissionKey) {
+    if (!hasPermission($permissionKey)) {
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            jsonResponse('error', 'You do not have permission to perform this action.', [], 403);
+        } else {
+            redirect(BASE_URL . 'errors/403.php');
+        }
+    }
 }
