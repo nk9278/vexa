@@ -97,6 +97,56 @@ try {
         UNIQUE(team_member_id, skill_id)
     )");
 
+    // Add is_crm flag to team_members if it doesn't exist (using try/catch to ignore if exists in sqlite)
+    try {
+        $db->exec("ALTER TABLE team_members ADD COLUMN is_crm INTEGER DEFAULT 0");
+    } catch (PDOException $e) {
+        // Column likely already exists
+    }
+
+    $db->exec("CREATE TABLE IF NOT EXISTS clients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(150),
+        mobile VARCHAR(20),
+        status VARCHAR(20) DEFAULT 'active', /* active, paused, archived */
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_at DATETIME NULL
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS client_assignments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        crm_id INTEGER NOT NULL, /* References team_members where is_crm = 1 */
+        assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(client_id, crm_id)
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS client_team_assignments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        team_member_id INTEGER NOT NULL, /* Production Resource */
+        role_id INTEGER, /* The role they are performing for this client */
+        assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(client_id, team_member_id)
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS deliverables (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        status VARCHAR(50) DEFAULT 'Pending', /* Pending, Working, Review, Approved, Completed, Delayed */
+        due_date DATE,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_at DATETIME NULL
+    )");
+
     $db->exec("CREATE TABLE IF NOT EXISTS saas_subscriptions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id INTEGER NOT NULL,

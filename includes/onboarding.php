@@ -26,6 +26,10 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
             ['team', 'edit_team'],
             ['team', 'delete_team'],
             ['team', 'manage_skills'],
+            ['crm', 'view_crm'],
+            ['crm', 'manage_crm'],
+            ['crm', 'assign_clients'],
+            ['crm', 'assign_team'],
             ['crm', 'manage_clients'],
             ['projects', 'manage_projects'],
             ['tasks', 'manage_tasks'],
@@ -55,8 +59,8 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         $defaultRoles = [
             'Owner' => $allPerms, // Owner gets everything
-            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
-            'CRM' => ['view_dashboard', 'manage_clients', 'manage_projects'],
+            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
+            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'manage_clients', 'manage_projects'],
             'Graphic Designer' => ['view_dashboard', 'manage_tasks'],
             'Video Editor' => ['view_dashboard', 'manage_tasks'],
             'Content Writer' => ['view_dashboard', 'manage_tasks'],

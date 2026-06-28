@@ -9,7 +9,7 @@ require_once '../../../includes/upload.php';
 
 requireLogin();
 requirePermission('edit_team'); // Added explicit permission check for security
-verifyCsrfToken();
+if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) { jsonResponse('error', 'Invalid CSRF token.', null, 403); }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonResponse('error', 'Invalid method', null, 405);

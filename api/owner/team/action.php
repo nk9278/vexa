@@ -8,7 +8,7 @@ require_once '../../../includes/logger.php';
 
 requireLogin();
 requirePermission('delete_team'); // Using 'delete_team' for archive/bulk actions
-verifyCsrfToken();
+if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) { jsonResponse('error', 'Invalid CSRF token.', null, 403); }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonResponse('error', 'Invalid method', null, 405);
