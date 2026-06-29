@@ -27,4 +27,4 @@ define('DEFAULT_TIMEZONE', 'UTC');
 
 // Upload Constants
 define('MAX_UPLOAD_SIZE', 50 * 1024 * 1024); // 50MB
-<?php define('ENCRYPTION_KEY', 'vexa_super_secret_sandbox_key_32');
+define('ENCRYPTION_KEY', 'vexa_super_secret_sandbox_key_32');

@@ -239,6 +239,37 @@ try {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
 
+    $db->exec("CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        crm_id INTEGER NULL,
+        deliverable_id INTEGER NULL, /* Optional link to auto-generated source */
+        deliverable_type_id INTEGER NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        priority VARCHAR(20) DEFAULT 'Medium', /* Low, Medium, High, Urgent */
+        status VARCHAR(50) DEFAULT 'Pending', /* Pending, Assigned, Accepted, In Progress, Ready For Review, Approved, Rejected, Completed, Cancelled, On Hold */
+        due_date DATE,
+        expected_completion_date DATE,
+        assigned_team_id INTEGER NULL,
+        assigned_by INTEGER NOT NULL,
+        remarks TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_at DATETIME NULL
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS task_timeline (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        task_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL, /* Person who did the action */
+        action VARCHAR(100) NOT NULL, /* Created, Assigned, Status Changed, etc. */
+        details TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
     $db->exec("CREATE TABLE IF NOT EXISTS saas_subscriptions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id INTEGER NOT NULL,

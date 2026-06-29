@@ -42,9 +42,13 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
             ['deliverables', 'edit_deliverables'],
             ['deliverables', 'delete_deliverables'],
             ['deliverables', 'manage_deliverable_types'],
+            ['tasks', 'view_tasks'],
+            ['tasks', 'create_tasks'],
+            ['tasks', 'edit_tasks'],
+            ['tasks', 'assign_tasks'],
+            ['tasks', 'reassign_tasks'],
+            ['tasks', 'delete_tasks'],
             ['projects', 'manage_projects'],
-            ['tasks', 'manage_tasks'],
-            ['tasks', 'approve_tasks'],
             ['finance', 'manage_finance'],
             ['settings', 'manage_settings']
         ];
@@ -70,16 +74,16 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         $defaultRoles = [
             'Owner' => $allPerms, // Owner gets everything
-            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'view_deliverables', 'create_deliverables', 'edit_deliverables', 'delete_deliverables', 'manage_deliverable_types', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
-            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'edit_credentials', 'manage_clients', 'view_deliverables', 'create_deliverables', 'edit_deliverables', 'delete_deliverables', 'manage_projects'],
-            'Graphic Designer' => ['view_dashboard', 'manage_tasks'],
-            'Video Editor' => ['view_dashboard', 'manage_tasks'],
-            'Content Writer' => ['view_dashboard', 'manage_tasks'],
-            'Photographer' => ['view_dashboard', 'manage_tasks'],
-            'SEO Executive' => ['view_dashboard', 'manage_tasks'],
-            'Ads Manager' => ['view_dashboard', 'manage_tasks'],
-            'Web Developer' => ['view_dashboard', 'manage_tasks'],
-            'App Developer' => ['view_dashboard', 'manage_tasks'],
+            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'view_deliverables', 'create_deliverables', 'edit_deliverables', 'delete_deliverables', 'manage_deliverable_types', 'view_tasks', 'create_tasks', 'edit_tasks', 'assign_tasks', 'reassign_tasks', 'delete_tasks', 'manage_projects'],
+            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'edit_credentials', 'manage_clients', 'view_deliverables', 'create_deliverables', 'edit_deliverables', 'delete_deliverables', 'view_tasks', 'create_tasks', 'edit_tasks', 'assign_tasks', 'reassign_tasks', 'manage_projects'],
+            'Graphic Designer' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'Video Editor' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'Content Writer' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'Photographer' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'SEO Executive' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'Ads Manager' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'Web Developer' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
+            'App Developer' => ['view_dashboard', 'view_tasks', 'edit_tasks'],
             'Account Executive' => ['view_dashboard', 'manage_finance'],
             'Reception' => ['view_dashboard'],
             'Intern' => ['view_dashboard']
