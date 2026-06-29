@@ -108,9 +108,26 @@ try {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         company_id INTEGER NOT NULL,
         name VARCHAR(100) NOT NULL,
+        brand_name VARCHAR(100),
+        owner_name VARCHAR(100),
+        contact_person VARCHAR(100),
         email VARCHAR(150),
+        business_email VARCHAR(150),
         mobile VARCHAR(20),
-        status VARCHAR(20) DEFAULT 'active', /* active, paused, archived */
+        alternate_mobile VARCHAR(20),
+        website VARCHAR(255),
+        business_category VARCHAR(100),
+        business_description TEXT,
+        gst_number VARCHAR(50),
+        address TEXT,
+        city VARCHAR(100),
+        state VARCHAR(100),
+        country VARCHAR(100),
+        pin_code VARCHAR(20),
+        google_business_link VARCHAR(255),
+        map_location TEXT,
+        status VARCHAR(20) DEFAULT 'active', /* active, paused, pending, completed, closed, archived */
+        remarks TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         deleted_at DATETIME NULL
@@ -145,6 +162,56 @@ try {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         deleted_at DATETIME NULL
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS client_credentials (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        platform VARCHAR(100) NOT NULL, /* Instagram, Facebook, Google, etc. */
+        username VARCHAR(255),
+        password_encrypted TEXT,
+        login_url VARCHAR(255),
+        notes TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS client_packages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        package_name VARCHAR(255) NOT NULL,
+        package_price DECIMAL(10,2) DEFAULT 0.00,
+        billing_cycle VARCHAR(50), /* Monthly, Quarterly, Yearly, One-time */
+        start_date DATE,
+        renewal_date DATE,
+        status VARCHAR(20) DEFAULT 'active',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS client_notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        created_by INTEGER NOT NULL,
+        note_type VARCHAR(50) DEFAULT 'Internal', /* Internal, Instruction, Meeting, Follow-up */
+        content TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS client_attachments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        uploaded_by INTEGER NOT NULL,
+        file_name VARCHAR(255) NOT NULL,
+        file_path VARCHAR(255) NOT NULL,
+        file_type VARCHAR(50), /* Logo, Guidelines, Document, Image, etc. */
+        file_size INTEGER,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
 
     $db->exec("CREATE TABLE IF NOT EXISTS saas_subscriptions (

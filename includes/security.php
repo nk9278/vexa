@@ -1,5 +1,31 @@
 <?php
 // includes/security.php
+
+// Ensure an encryption key exists for the Credential Vault
+if (!defined('ENCRYPTION_KEY')) {
+    define('ENCRYPTION_KEY', 'vexa_super_secret_fallback_key_32bytes!!'); // In production, define this securely in config.php
+}
+
+/**
+ * Encrypt Data using AES-256-CBC
+ */
+function encryptData($data, $key = ENCRYPTION_KEY) {
+    if (empty($data)) return '';
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+    return base64_encode($encrypted . '::' . $iv);
+}
+
+/**
+ * Decrypt Data using AES-256-CBC
+ */
+function decryptData($data, $key = ENCRYPTION_KEY) {
+    if (empty($data)) return '';
+    $decoded = base64_decode($data);
+    if (strpos($decoded, '::') === false) return '';
+    list($encrypted_data, $iv) = explode('::', $decoded, 2);
+    return openssl_decrypt($encrypted_data, 'aes-256-cbc', $key, 0, $iv);
+}
 if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) die('Direct access denied.');
 
 require_once __DIR__ . '/session.php';

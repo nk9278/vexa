@@ -22,22 +22,18 @@ try {
          jsonResponse('error', 'No file uploaded.');
     }
 
-    $uploadDir = UPLOADS_PATH . '/' . $company_id . '/photos/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-        file_put_contents($uploadDir . '/.gitkeep', '');
-        file_put_contents($uploadDir . '/index.html', ''); // Prevent directory listing
-    }
+    // MIME Types for Web Images
+    $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
 
-    $result = handleUpload($_FILES['profile_photo'], $uploadDir, ['jpg', 'jpeg', 'png', 'webp'], 2097152); // 2MB limit
+    // handleSecureUpload automatically handles creating the tenant folder
+    $result = handleSecureUpload($_FILES['profile_photo'], $company_id, $allowedMimes, 2097152); // 2MB limit
 
     if (!$result['success']) {
         jsonResponse('error', $result['error']);
     }
 
-    // Return the relative path so the frontend can preview it, and submit it with the main form.
-    // The main form logic will save this path into the DB.
-    $relativePath = str_replace(ROOT_PATH, '', $result['path']);
+    // The result from handleSecureUpload returns relative paths from root, like '/uploads/tenant/file.ext'
+    $relativePath = $result['path'];
     // Normalize path separators for web
     $relativePath = str_replace('\\', '/', $relativePath);
 

@@ -31,6 +31,12 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
             ['crm', 'assign_clients'],
             ['crm', 'assign_team'],
             ['crm', 'manage_clients'],
+            ['client', 'view_client'],
+            ['client', 'create_client'],
+            ['client', 'edit_client'],
+            ['client', 'delete_client'],
+            ['client', 'view_credentials'],
+            ['client', 'edit_credentials'],
             ['projects', 'manage_projects'],
             ['tasks', 'manage_tasks'],
             ['tasks', 'approve_tasks'],
@@ -59,8 +65,8 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         $defaultRoles = [
             'Owner' => $allPerms, // Owner gets everything
-            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
-            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'manage_clients', 'manage_projects'],
+            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
+            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'edit_credentials', 'manage_clients', 'manage_projects'],
             'Graphic Designer' => ['view_dashboard', 'manage_tasks'],
             'Video Editor' => ['view_dashboard', 'manage_tasks'],
             'Content Writer' => ['view_dashboard', 'manage_tasks'],
