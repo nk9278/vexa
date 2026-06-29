@@ -152,13 +152,38 @@ try {
         UNIQUE(client_id, team_member_id)
     )");
 
+    $db->exec("CREATE TABLE IF NOT EXISTS deliverable_types (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        name VARCHAR(150) NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS monthly_plans (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        company_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        package_id INTEGER NULL, /* Optional link to client_packages */
+        plan_month VARCHAR(7) NOT NULL, /* e.g., '2023-10' */
+        status VARCHAR(50) DEFAULT 'draft', /* draft, active, completed, archived */
+        monthly_budget DECIMAL(10,2) DEFAULT 0.00,
+        start_date DATE,
+        end_date DATE,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_at DATETIME NULL
+    )");
+
     $db->exec("CREATE TABLE IF NOT EXISTS deliverables (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         company_id INTEGER NOT NULL,
         client_id INTEGER NOT NULL,
+        monthly_plan_id INTEGER NULL,
+        deliverable_type_id INTEGER NULL,
         title VARCHAR(255) NOT NULL,
-        status VARCHAR(50) DEFAULT 'Pending', /* Pending, Working, Review, Approved, Completed, Delayed */
+        status VARCHAR(50) DEFAULT 'Pending', /* Pending, Working, Review, Approved, Completed, Delayed, Rejected */
         due_date DATE,
+        assigned_team_ids TEXT, /* JSON array of team_member_ids for quick lookup */
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         deleted_at DATETIME NULL

@@ -22,7 +22,7 @@ require_once '../includes/sidebar.php';
         </div>
 
         <form id="createClientForm" class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+            <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Core Info -->

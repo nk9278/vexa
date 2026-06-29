@@ -266,7 +266,7 @@ $(document).ready(function() {
                 data: {
                     action: action,
                     ids: ids,
-                    csrf_token: '<?= generateCsrfToken() ?>'
+                    csrf_token: '<?= getCsrfToken() ?>'
                 },
                 success: function(res) {
                     if (res.status === 'success') {

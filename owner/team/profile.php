@@ -210,7 +210,7 @@ $(document).ready(function() {
 
         const formData = new FormData();
         formData.append('profile_photo', file);
-        formData.append('csrf_token', '<?= generateCsrfToken() ?>');
+        formData.append('csrf_token', '<?= getCsrfToken() ?>');
 
         // This is a placeholder for actual photo upload via API.
         // For the sake of Phase 20 constraints, we require the update endpoint to handle the path,
@@ -232,7 +232,7 @@ $(document).ready(function() {
                         full_name: '<?= esc($member['full_name']) ?>', // required fields
                         email: '<?= esc($member['email']) ?>',
                         role_id: '<?= $member['role_id'] ?>',
-                        csrf_token: '<?= generateCsrfToken() ?>'
+                        csrf_token: '<?= getCsrfToken() ?>'
                     }).done(function() {
                         location.reload();
                     });

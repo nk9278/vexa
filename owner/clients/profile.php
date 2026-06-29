@@ -286,7 +286,7 @@ require_once '../includes/sidebar.php';
                         </button>
                     </div>
                     <form id="addCredForm" class="p-6 space-y-4">
-                        <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                        <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
                         <input type="hidden" name="action" value="create">
                         <input type="hidden" name="client_id" value="<?= $id ?>">
 
@@ -376,7 +376,7 @@ require_once '../includes/sidebar.php';
                         </button>
                     </div>
                     <form id="addPkgForm" class="p-6 space-y-4">
-                        <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                        <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
                         <input type="hidden" name="action" value="create">
                         <input type="hidden" name="client_id" value="<?= $id ?>">
 
@@ -447,7 +447,7 @@ require_once '../includes/sidebar.php';
                 <?php if(hasPermission('edit_client')): ?>
                 <div class="lg:col-span-1">
                     <form id="addNoteForm" class="bg-gray-50 p-4 rounded-xl border border-gray-100 sticky top-20">
-                        <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                        <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
                         <input type="hidden" name="action" value="create">
                         <input type="hidden" name="client_id" value="<?= $id ?>">
                         <h4 class="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Add Note</h4>
@@ -516,7 +516,7 @@ require_once '../includes/sidebar.php';
                         </button>
                     </div>
                     <form id="addAttForm" class="p-6 space-y-4">
-                        <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                        <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
                         <input type="hidden" name="action" value="upload">
                         <input type="hidden" name="client_id" value="<?= $id ?>">
 
@@ -607,7 +607,7 @@ $(document).ready(function() {
 
     $('.delete-cred-btn').on('click', function() {
         if(!confirm('Delete this credential?')) return;
-        $.post('/api/owner/clients/credentials.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= generateCsrfToken() ?>' }, function(res) {
+        $.post('/api/owner/clients/credentials.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= getCsrfToken() ?>' }, function(res) {
             if(res.status === 'success') location.reload(); else alert(res.message);
         });
     });
@@ -621,7 +621,7 @@ $(document).ready(function() {
             return;
         }
 
-        $.post('/api/owner/clients/credentials.php', { action: 'view_password', id: id, client_id: <?= $id ?>, csrf_token: '<?= generateCsrfToken() ?>' }, function(res) {
+        $.post('/api/owner/clients/credentials.php', { action: 'view_password', id: id, client_id: <?= $id ?>, csrf_token: '<?= getCsrfToken() ?>' }, function(res) {
             if(res.status === 'success') {
                 $input.attr('type', 'text').val(res.data.password);
             } else alert(res.message);
@@ -642,7 +642,7 @@ $(document).ready(function() {
 
     $('.delete-pkg-btn').on('click', function() {
         if(!confirm('Delete this package?')) return;
-        $.post('/api/owner/clients/package.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= generateCsrfToken() ?>' }, function(res) {
+        $.post('/api/owner/clients/package.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= getCsrfToken() ?>' }, function(res) {
             if(res.status === 'success') location.reload(); else alert(res.message);
         });
     });
@@ -661,7 +661,7 @@ $(document).ready(function() {
 
     $('.delete-note-btn').on('click', function() {
         if(!confirm('Delete this note?')) return;
-        $.post('/api/owner/clients/notes.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= generateCsrfToken() ?>' }, function(res) {
+        $.post('/api/owner/clients/notes.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= getCsrfToken() ?>' }, function(res) {
             if(res.status === 'success') location.reload(); else alert(res.message);
         });
     });
@@ -681,7 +681,7 @@ $(document).ready(function() {
 
     $('.delete-att-btn').on('click', function() {
         if(!confirm('Delete this attachment permanently?')) return;
-        $.post('/api/owner/clients/attachments.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= generateCsrfToken() ?>' }, function(res) {
+        $.post('/api/owner/clients/attachments.php', { action: 'delete', id: $(this).data('id'), client_id: <?= $id ?>, csrf_token: '<?= getCsrfToken() ?>' }, function(res) {
             if(res.status === 'success') location.reload(); else alert(res.message);
         });
     });

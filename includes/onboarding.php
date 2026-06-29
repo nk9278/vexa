@@ -37,6 +37,11 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
             ['client', 'delete_client'],
             ['client', 'view_credentials'],
             ['client', 'edit_credentials'],
+            ['deliverables', 'view_deliverables'],
+            ['deliverables', 'create_deliverables'],
+            ['deliverables', 'edit_deliverables'],
+            ['deliverables', 'delete_deliverables'],
+            ['deliverables', 'manage_deliverable_types'],
             ['projects', 'manage_projects'],
             ['tasks', 'manage_tasks'],
             ['tasks', 'approve_tasks'],
@@ -65,8 +70,8 @@ function initializeCompanyWorkspace($companyId, $ownerData) {
 
         $defaultRoles = [
             'Owner' => $allPerms, // Owner gets everything
-            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
-            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'edit_credentials', 'manage_clients', 'manage_projects'],
+            'Manager' => ['view_dashboard', 'manage_team', 'view_team', 'create_team', 'edit_team', 'manage_skills', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'view_deliverables', 'create_deliverables', 'edit_deliverables', 'delete_deliverables', 'manage_deliverable_types', 'manage_projects', 'manage_tasks', 'approve_leaves', 'approve_tasks'],
+            'CRM' => ['view_dashboard', 'view_crm', 'manage_crm', 'assign_clients', 'assign_team', 'view_client', 'create_client', 'edit_client', 'view_credentials', 'edit_credentials', 'manage_clients', 'view_deliverables', 'create_deliverables', 'edit_deliverables', 'delete_deliverables', 'manage_projects'],
             'Graphic Designer' => ['view_dashboard', 'manage_tasks'],
             'Video Editor' => ['view_dashboard', 'manage_tasks'],
             'Content Writer' => ['view_dashboard', 'manage_tasks'],

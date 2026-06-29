@@ -70,7 +70,7 @@ require_once '../includes/sidebar.php';
         </div>
 
         <form id="editTeamForm" class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+            <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
             <input type="hidden" name="id" value="<?= $member['id'] ?>">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

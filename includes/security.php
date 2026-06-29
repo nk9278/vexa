@@ -1,15 +1,14 @@
 <?php
 // includes/security.php
 
-// Ensure an encryption key exists for the Credential Vault
-if (!defined('ENCRYPTION_KEY')) {
-    define('ENCRYPTION_KEY', 'vexa_super_secret_fallback_key_32bytes!!'); // In production, define this securely in config.php
-}
-
 /**
  * Encrypt Data using AES-256-CBC
  */
-function encryptData($data, $key = ENCRYPTION_KEY) {
+function encryptData($data, $key = null) {
+    $key = $key ?? (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null);
+    if (!$key) {
+        throw new Exception("ENCRYPTION_KEY is not defined. Cannot securely store credentials.");
+    }
     if (empty($data)) return '';
     $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
     $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
@@ -19,7 +18,11 @@ function encryptData($data, $key = ENCRYPTION_KEY) {
 /**
  * Decrypt Data using AES-256-CBC
  */
-function decryptData($data, $key = ENCRYPTION_KEY) {
+function decryptData($data, $key = null) {
+    $key = $key ?? (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null);
+    if (!$key) {
+        throw new Exception("ENCRYPTION_KEY is not defined. Cannot securely retrieve credentials.");
+    }
     if (empty($data)) return '';
     $decoded = base64_decode($data);
     if (strpos($decoded, '::') === false) return '';

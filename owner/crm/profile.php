@@ -166,7 +166,7 @@ require_once '../includes/sidebar.php';
 
                     <?php if (hasPermission('assign_clients')): ?>
                         <form id="assignClientForm" class="flex gap-3 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                            <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
                             <input type="hidden" name="action" value="assign">
                             <input type="hidden" name="crm_id" value="<?= $crm['id'] ?>">
 
@@ -267,7 +267,7 @@ require_once '../includes/sidebar.php';
                 </button>
             </div>
             <form id="assignTeamForm" class="p-6 space-y-4">
-                <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
                 <input type="hidden" name="action" value="assign">
                 <input type="hidden" name="client_id" id="modalClientId" value="">
 
@@ -351,7 +351,7 @@ $(document).ready(function() {
                 action: 'remove',
                 client_id: client_id,
                 crm_id: crm_id,
-                csrf_token: '<?= generateCsrfToken() ?>'
+                csrf_token: '<?= getCsrfToken() ?>'
             },
             success: function(res) {
                 if(res.status === 'success') {
@@ -414,7 +414,7 @@ $(document).ready(function() {
                 action: 'remove',
                 client_id: client_id,
                 team_member_id: team_id,
-                csrf_token: '<?= generateCsrfToken() ?>'
+                csrf_token: '<?= getCsrfToken() ?>'
             },
             success: function(res) {
                 if(res.status === 'success') {
